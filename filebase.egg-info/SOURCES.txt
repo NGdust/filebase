@@ -1,0 +1,8 @@
+setup.py
+filebase/__init__.py
+filebase/filebase.py
+filebase.egg-info/PKG-INFO
+filebase.egg-info/SOURCES.txt
+filebase.egg-info/dependency_links.txt
+filebase.egg-info/requires.txt
+filebase.egg-info/top_level.txt
