@@ -1,2 +1,2 @@
 boto3
-google-core-storage
+google-cloud-storage
