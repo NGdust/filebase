@@ -4,9 +4,6 @@ from botocore.client import Config
 from google.cloud import storage
 
 
-
-FIREBASE_STORAGE_BUCKET = 'suptitle-kvando.appspot.com'
-
 class FirebaseTransport:
     def upload(self):
         raise NotImplementedError
@@ -20,13 +17,13 @@ class FirebaseStorageTransport(FirebaseTransport):
         self.from_filename = from_filename
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'config-google.json'
         self.client = storage.Client()
-        self.bucket = self.client.get_bucket('suptitle-kvando.appspot.com')
+        self.bucket = self.client.get_bucket(os.environ.get('FIREBASE_STORAGE_BUCKET')
 
 
     async def upload(self):
         blob = self.bucket.blob(self.user_email + '/' + self.to_filename)
         blob.upload_from_filename(self.from_filename)
-        return f'gs://{FIREBASE_STORAGE_BUCKET}/{self.user_email}/{self.to_filename}'
+        return f"gs://{os.environ.get('FIREBASE_STORAGE_BUCKET')}/{self.user_email}/{self.to_filename}"
 
 
 class WassabiStorageTransport:
@@ -38,8 +35,8 @@ class WassabiStorageTransport:
         self.s3 = boto3.resource(
                                     's3',
                                     endpoint_url=self.endpoint_url,
-                                    aws_access_key_id='H65G53K0E0IPIP95QQ6L',
-                                    aws_secret_access_key='GSpLRT4IFa67fGbWYIRHugC2nzmQ9l7RS1Hl7Mqq',
+                                    aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'),
+                                    aws_secret_access_key=os.environ.get('AWS_SECRET_KEY'),
                                     config=Config(signature_version='s3v4')
                                 )
 
