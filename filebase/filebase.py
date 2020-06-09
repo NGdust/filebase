@@ -17,10 +17,10 @@ class FirebaseStorageTransport(FirebaseTransport):
         self.from_filename = from_filename
         os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'config-google.json'
         self.client = storage.Client()
-        self.bucket = self.client.get_bucket(os.environ.get('FIREBASE_STORAGE_BUCKET')
+        self.bucket = self.client.get_bucket(os.environ.get('FIREBASE_STORAGE_BUCKET'))
 
 
-    async def upload(self):
+    def upload(self):
         blob = self.bucket.blob(self.user_email + '/' + self.to_filename)
         blob.upload_from_filename(self.from_filename)
         return f"gs://{os.environ.get('FIREBASE_STORAGE_BUCKET')}/{self.user_email}/{self.to_filename}"
@@ -41,7 +41,7 @@ class WassabiStorageTransport:
                                 )
 
 
-    async def upload(self):
+    def upload(self):
         data = open(self.from_filename, 'rb')
         key_file = self.user_email + '/' + self.from_filename.split('/')[-1]
 
