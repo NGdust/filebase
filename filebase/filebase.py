@@ -55,12 +55,19 @@ class WassabiStorageTransport:
             print(f'https://{self.bucket}.s3.us-west-1.wasabisys.com/{obj.key}')
 
 
-    def clear_bucket(self):
+    def clear_all_bucket(self):
         listObjSummary = self.s3.Bucket(self.bucket).objects.all()
         for obj in listObjSummary:
             obj.delete()
-            print(f'https://{self.bucket}.s3.us-west-1.wasabisys.com/{obj.key}')
+            print(f'Deleted https://{self.bucket}.s3.us-west-1.wasabisys.com/{obj.key}')
+
+    def clear_user_bucket(self, user):
+        listObjSummary = self.s3.Bucket(self.bucket).objects.all()
+        for obj in listObjSummary:
+            if user in obj.key:
+                obj.delete()
+                print(f'Deleted from {user}: https://{self.bucket}.s3.us-west-1.wasabisys.com/{obj.key}')
 
 if __name__ == '__main__':
-    transport = WassabiStorageTransport(from_filename='1.txt')
+    transport = WassabiStorageTransport()
     test = transport.list_files()
